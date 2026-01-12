@@ -4,8 +4,8 @@ set -o pipefail
 # -------------------------------------------------
 # CONFIG
 # -------------------------------------------------
-SLACK_CHANNEL="C08NT32SM7H"
-SLACK_USERNAME="qbot"
+SLACK_CHANNEL="<slack cheannel code note name>"
+SLACK_USERNAME="<your username>"
 SLACK_ICON_EMOJI=":file_folder:"
 STATE_FILE=".last_slack_message"
 
@@ -70,7 +70,7 @@ EOF
 # -------------------------------------------------
 # OPTIONAL DEBUG (one-line toggle)
 # -------------------------------------------------
-echo "$payload" > ~/Desktop/slack_last_payload.json
+# echo "$payload" > ~/Desktop/slack_last_payload.json
 
 # -------------------------------------------------
 # POST MESSAGE (NO RESPONSE PARSING)
