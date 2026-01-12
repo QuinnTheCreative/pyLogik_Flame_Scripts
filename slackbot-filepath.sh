@@ -1,11 +1,31 @@
 #!/bin/bash -e
 set -o pipefail
 
+# I created this script as a means to quickly and simply 
+# post a directory path and listing to a specific slack channel.
+# Then taking the result of that data and formatting it as "code" in slack.
+# The formatting was desired as it visually makes it distinguished from the 
+# rest of any slack conversations.
+
+# To do this, you need to create a basic slack app. This is very basic
+# and involves only delcaring the app in your works space via api.slack.com/apps
+
+# Once you have created the app, you need to authorize it in those settings.
+# Specifically, OAuth & Permissions. It is here you will generate the Token to
+# authorize the script to post to your app and thus post to your slack-channel.
+
+# The script here was cobbled together via vibe conding with ChatGPT and referencing
+#  (https://github.com/rockymadden/slack-cli)
+
+
+
+
+
 # -------------------------------------------------
 # CONFIG
 # -------------------------------------------------
-SLACK_CHANNEL="<slack cheannel code not name>"
-SLACK_USERNAME="<your username>"
+SLACK_CHANNEL="C08NT32SM7H"
+SLACK_USERNAME="qbot"
 SLACK_ICON_EMOJI=":file_folder:"
 STATE_FILE=".last_slack_message"
 
