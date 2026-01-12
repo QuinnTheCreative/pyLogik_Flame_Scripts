@@ -4,7 +4,7 @@ set -o pipefail
 # -------------------------------------------------
 # CONFIG
 # -------------------------------------------------
-SLACK_CHANNEL="<slack cheannel code note name>"
+SLACK_CHANNEL="<slack cheannel code not name>"
 SLACK_USERNAME="<your username>"
 SLACK_ICON_EMOJI=":file_folder:"
 STATE_FILE=".last_slack_message"
