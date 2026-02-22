@@ -14,7 +14,7 @@ set -o pipefail
 # Specifically, OAuth & Permissions. It is here you will generate the Token to
 # authorize the script to post to your app and thus post to your slack-channel.
 
-# The script here was cobbled together via vibe conding with ChatGPT and referencing
+# The script here was cobbled together via vibe coding with ChatGPT and referencing
 #  (https://github.com/rockymadden/slack-cli)
 
 
