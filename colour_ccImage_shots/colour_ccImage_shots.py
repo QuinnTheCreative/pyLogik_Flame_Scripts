@@ -90,28 +90,15 @@ def get_media_panel_custom_ui_actions():
     return [
         {
             'name': 'Color Segments...',
+            'hierarchy': [],
             'actions': [
                 {
                     'name': 'Color Image Segments',
                     'isVisible': scope_seq,
                     'execute': color_ccImage_sequence,
                     'minimumVersion': '2020',
-                    'maximumVersion': '2023.1'
                 }
             ]
-        },
-        {
-           'hierarchy': [],
-           'actions': [
-               {
-                    'name': 'Color Image Segments',
-                    'order': 1,
-                    'separator': 'below',
-                    'isVisible': scope_seq,
-                    'execute': color_ccImage_sequence,
-                    'minimumVersion': '2023.2'
-               }
-           ]
         }
     ]
 
@@ -119,27 +106,14 @@ def get_timeline_custom_ui_actions():
     return [
         {
             'name': 'Color Segments...',
+            'hierarchy': [],
             'actions': [
                 {
                     'name': 'Color Image Segments',
                     'isVisible': scope_segment,
                     'execute': color_ccImage_segment_selection,
                     'minimumVersion': '2020',
-                    'maximumVersion': '2023.1'
                 }
             ]
-        },
-        {
-           'hierarchy': [],
-           'actions': [
-               {
-                    'name': 'Color Image Segments',
-                    'order': 1,
-                    'separator': 'below',
-                    'isVisible': scope_segment,
-                    'execute': color_ccImage_segment_selection,
-                    'minimumVersion': '2023.2'
-               }
-           ]
         }
     ]
