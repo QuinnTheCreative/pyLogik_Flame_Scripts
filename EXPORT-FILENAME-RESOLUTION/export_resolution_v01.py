@@ -20,7 +20,7 @@ export pass at native resolution.
 HOOK PLACEMENT
 --------------
 Copy this file to your Flame hooks directory, e.g.:
-    /opt/Autodesk/<flame_version>/python/   (system-wide)
+    /opt/Autodesk/shared/python/   (system-wide)
   or add its folder to $DL_PYTHON_HOOK_PATH.
 
 PRESET REQUIREMENT
@@ -34,7 +34,7 @@ RESOLUTION NAMING CONVENTIONS SUPPORTED
 ----------------------------------------
     MySpot_1920x1080_v01
     PROJ_3840x2160_v003_OUTPUT
-    en_US_BEEF2_Spot_SecretCutdown_30_1920x1080_PRHQ_2CH_post_...
+    en_US_<show>_Spot_<spot name>_30_1920x1080_PRHQ_2CH_post_...
     Sequence_2048_1556
     spot_1920_1080_final
 
@@ -58,10 +58,10 @@ import shutil
 
 # Base directory for Flame shared export presets.
 # Update the version string (e.g. 2027.pr239) when upgrading Flame.
-PRESET_BASE_DIR = "/opt/Autodesk/presets/2027.pr239/export/presets/flame/movie_file/Apple Final Cut Pro"
+PRESET_BASE_DIR = "EXPORT_PRESET"
 
 # The exact filename (without .xml) of your ProRes 422 HQ preset.
-PRORES_PRESET_NAME = "Final Cut Pro (Apple ProRes 422 HQ)"
+PRORES_PRESET_NAME = "MASTER_SAME-AS-SOURCE_422HQ"
 
 # Starting directory shown in the browse-for-folder dialog.
 BROWSE_START_PATH = "/Volumes/Media/NETFLIX_PROJECTS/"
