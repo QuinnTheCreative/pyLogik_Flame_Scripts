@@ -1,5 +1,5 @@
 """
-exportHook.py — Flame Python Export Hook
+Exports Quicktime ProRes 422 HQ files based on a resolution parsed from the clip's filename.
 =========================================
 Parses a resolution token from each selected clip's name and exports each
 one independently as a QuickTime ProRes 422 HQ movie at that resolution,
