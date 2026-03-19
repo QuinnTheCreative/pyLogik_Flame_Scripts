@@ -58,7 +58,7 @@ import shutil
 
 # Base directory for Flame shared export presets.
 # Update the version string (e.g. 2027.pr239) when upgrading Flame.
-PRESET_BASE_DIR = "EXPORT_PRESET"
+PRESET_BASE_DIR = "/opt/Autodesk/shared/python/EXPORT-FILENAME-RESOLUTION/EXPORT_PRESET"
 
 # The exact filename (without .xml) of your ProRes 422 HQ preset.
 PRORES_PRESET_NAME = "MASTER_SAME-AS-SOURCE_422HQ"
