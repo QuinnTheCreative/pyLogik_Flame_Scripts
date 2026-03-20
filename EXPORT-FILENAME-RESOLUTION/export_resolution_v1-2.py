@@ -274,6 +274,7 @@ def export_clip_with_preset(clip, preset_path, destination):
 
     exporter = flame.PyExporter()
     exporter.foreground = True
+    exporter.use_top_video_track = True
     exporter.export(clip, preset_path, destination)
 
 
