@@ -27,11 +27,11 @@ HOW THE PROJECT PATH IS DERIVED
 ---------------------------------
 flame.projects.current_project.project_folder returns a path nested inside
 the larger project directory, e.g.:
-    /Volumes/Media/CLIENT/MY_PROJECT/05_FLAME/MY_PROJECT_flame01
+    /Volumes/Media/NETFLIX_PROJECTS/MY_PROJECT/05_FLAME/MY_PROJECT_flame01
 
 The script locates the project name component in that path, truncates
 everything after it, then appends 06_EXPORTS:
-    /Volumes/Media/CLIENT/MY_PROJECT/06_EXPORTS
+    /Volumes/Media/NETFLIX_PROJECTS/MY_PROJECT/06_EXPORTS
 
 If the project name cannot be found in the path, the browser falls back
 to BROWSE_START_PATH so the user can still pick a folder manually.
@@ -78,13 +78,13 @@ import shutil
 
 # Base directory for Flame shared export presets.
 # Update the version string (e.g. 2027.pr239) when upgrading Flame.
-PRESET_BASE_DIR = "/opt/Autodesk/shared/python/EXPORT-FILENAME-RESOLUTION/EXPORT_PRESET"
+PRESET_BASE_DIR = "/opt/Autodesk/shared/python/BLAST_scripts/EXPORT-FILENAME-RESOLUTION/EXPORT_PRESET"
 
 # The exact filename (without .xml) of your ProRes 422 HQ preset.
 PRORES_PRESET_NAME = "MASTER_SAME-AS-SOURCE_422HQ"
 
 # Starting directory shown in the browse-for-folder dialog.
-# BROWSE_START_PATH = "/Volumes/Media/NETFLIX_PROJECTS/"
+BROWSE_START_PATH = "/Volumes/Media/NETFLIX_PROJECTS/"
 
 # Name shown in Flame's right-click contextual menu.
 MENU_LABEL = "Export by Resolution in Name"
@@ -187,7 +187,7 @@ def get_project_export_path():
 
     flame.projects.current_project.project_folder returns a path that is
     nested *inside* the larger project directory, e.g.:
-        /Volumes/Media/CLIENT/MY_PROJECT/05_FLAME/MY_PROJECT_flame01
+        /Volumes/Media/NETFLIX_PROJECTS/MY_PROJECT/05_FLAME/MY_PROJECT_flame01
 
     To reach 06_EXPORTS we need to:
       1. Split the path into components.
@@ -196,7 +196,7 @@ def get_project_export_path():
       4. Append "06_EXPORTS".
 
     Result:
-        /Volumes/Media/CLIENT/MY_PROJECT/06_EXPORTS
+        /Volumes/Media/NETFLIX_PROJECTS/MY_PROJECT/06_EXPORTS
 
     Returns the derived path string, or None if the project name cannot be
     located in the folder path (caller falls back to BROWSE_START_PATH).
@@ -243,7 +243,7 @@ def get_project_export_path():
         return None
 
 
-def browse_for_destination(default_path=export_path):
+def browse_for_destination(default_path=str(get_project_export_path)):
     """
     Open the native Flame folder browser.
     Returns the chosen path string, or None if the user cancelled.
