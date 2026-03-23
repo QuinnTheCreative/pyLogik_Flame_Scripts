@@ -243,7 +243,7 @@ def get_project_export_path():
         return None
 
 
-def browse_for_destination(default_path=BROWSE_START_PATH):
+def browse_for_destination(default_path=export_path):
     """
     Open the native Flame folder browser.
     Returns the chosen path string, or None if the user cancelled.
