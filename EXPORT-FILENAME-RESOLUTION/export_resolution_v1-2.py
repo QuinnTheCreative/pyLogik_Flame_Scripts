@@ -27,7 +27,7 @@ HOW THE PROJECT PATH IS DERIVED
 ---------------------------------
 flame.projects.current_project.project_folder returns a path nested inside
 the larger project directory, e.g.:
-    /Volumes/Media/NETFLIX_PROJECTS/MY_PROJECT/05_FLAME/MY_PROJECT_flame01
+    /Volumes/Media/CLIENT/MY_PROJECT/05_FLAME/MY_PROJECT_flame01
 
 The script locates the project name component in that path, truncates
 everything after it, then appends 06_EXPORTS:
