@@ -522,8 +522,8 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
             name: String name of the sequence
         """
         try:
-            # Get all video tracks in the sequence
-            if not hasattr(sequence, 'video_tracks'):
+            # Get all tracks in the sequence
+            if not hasattr(sequence, 'tracks'):
                 return
             
             tracks_to_hide = set()
@@ -540,15 +540,21 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
                     tracks_to_hide.add("sub")
                     message(f"Hiding 'sub' track for NoSub sequence: {name}")
             
-            # Apply visibility settings to each video track
+            # Apply visibility settings to each track
             if tracks_to_hide:
-                for track in sequence.video_tracks:
-                    if hasattr(track, 'name') and track.name.lower() in tracks_to_hide:
-                        try:
-                            track.hidden = True
-                            message(f"Set '{track.name}' track to hidden for: {name}")
-                        except Exception as e:
-                            message(f"Error hiding track '{track.name}': {e}")
+                for track in sequence.tracks:
+                    # Check if this is a Video track
+                    if hasattr(track, 'type') and track.type == 'Video':
+                        if hasattr(track, 'name') and track.name.lower() in tracks_to_hide:
+                            try:
+                                # Set track visibility to False using properties
+                                if hasattr(track, 'properties'):
+                                    track.properties.visible = False
+                                    message(f"Set '{track.name}' track to hidden for: {name}")
+                                else:
+                                    message(f"Could not access properties for track '{track.name}'")
+                            except Exception as e:
+                                message(f"Error hiding track '{track.name}': {e}")
         
         except Exception as e:
             message(f"Error applying track visibility for {name}: {e}")
