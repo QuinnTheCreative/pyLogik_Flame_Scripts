@@ -16,10 +16,10 @@ Description:
     containing "_post_" in their name.
     
     New in v1.3:
-    - Layer visibility control based on sequence name patterns:
-      * "NoBug" pattern: hides the "bug" layer
-      * "NoSub" pattern: hides the "sub" layer
-      * "Textless" pattern: hides both "bug" and "sub" layers
+    - Track visibility control based on sequence name patterns:
+      * "Textless" pattern: hides the "bug", "sub", and "gfx" tracks
+      * "NoBug" pattern: hides the "bug" track
+      * "NoSub" pattern: hides the "sub" track
 
 Usage: 
 
@@ -39,10 +39,10 @@ Usage:
     
     Clips with "_post_" in their name will be automatically colored.
     
-    Layer visibility will be automatically set based on naming conventions:
-    - Use "Textless" to hide bug and sub layers
-    - Use "NoBug" to hide the bug layer
-    - Use "NoSub" to hide the sub layer
+    Track visibility will be automatically set based on naming conventions:
+    - Use "Textless" to hide bug, sub, and gfx tracks
+    - Use "NoBug" to hide the bug track
+    - Use "NoSub" to hide the sub track
 
 To Install:
 
@@ -344,15 +344,15 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
                 font: 12px "Discreet";
                 padding: 5px}""")
         
-        # Layer visibility info section
-        self.layer_info_label = FlameLabel(
-            'Layer visibility: Textless | NoBug | NoSub',
+        # Track visibility info section
+        self.track_info_label = FlameLabel(
+            'Track visibility: Textless (bug, sub, gfx) | NoBug (bug) | NoSub (sub)',
             'normal', 500)
-        self.layer_info_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.layer_info_label.setStyleSheet("""
+        self.track_info_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.track_info_label.setStyleSheet("""
             QLabel {
                 color: rgb(120, 140, 160);
-                font: 11px "Discreet";
+                font: 10px "Discreet";
                 padding: 3px}""")
         
         # Summary Section
@@ -423,8 +423,8 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
         # Color info
         main_layout.addWidget(self.color_info_label)
         
-        # Layer visibility info
-        main_layout.addWidget(self.layer_info_label)
+        # Track visibility info
+        main_layout.addWidget(self.track_info_label)
         
         # Summary
         main_layout.addWidget(self.summary_label)
@@ -509,13 +509,13 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
             self.summary_label.setText("Please select a valid CSV file with names")
             self.duplicate_button.setEnabled(False)
 
-    def apply_layer_visibility(self, sequence, name):
+    def apply_track_visibility(self, sequence, name):
         """
-        Apply layer visibility settings based on sequence name patterns.
+        Apply track visibility settings based on sequence name patterns.
         
-        - "Textless" pattern: hides the "bug" and "sub" layers
-        - "NoBug" pattern: hides the "bug" layer
-        - "NoSub" pattern: hides the "sub" layer
+        - "Textless" pattern: hides the "bug", "sub", and "gfx" tracks
+        - "NoBug" pattern: hides the "bug" track
+        - "NoSub" pattern: hides the "sub" track
         
         Args:
             sequence: PySequence object
@@ -526,32 +526,32 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
             if not hasattr(sequence, 'video_tracks'):
                 return
             
-            layers_to_hide = set()
+            tracks_to_hide = set()
             
-            # Determine which layers to hide based on name patterns
+            # Determine which tracks to hide based on name patterns
             if "textless" in name.lower():
-                layers_to_hide.update(["bug", "sub"])
-                message(f"Hiding 'bug' and 'sub' layers for Textless sequence: {name}")
+                tracks_to_hide.update(["bug", "sub", "gfx"])
+                message(f"Hiding 'bug', 'sub', and 'gfx' tracks for Textless sequence: {name}")
             else:
                 if "nobug" in name.lower():
-                    layers_to_hide.add("bug")
-                    message(f"Hiding 'bug' layer for NoBug sequence: {name}")
+                    tracks_to_hide.add("bug")
+                    message(f"Hiding 'bug' track for NoBug sequence: {name}")
                 if "nosub" in name.lower():
-                    layers_to_hide.add("sub")
-                    message(f"Hiding 'sub' layer for NoSub sequence: {name}")
+                    tracks_to_hide.add("sub")
+                    message(f"Hiding 'sub' track for NoSub sequence: {name}")
             
             # Apply visibility settings to each video track
-            if layers_to_hide:
+            if tracks_to_hide:
                 for track in sequence.video_tracks:
-                    if hasattr(track, 'name') and track.name.lower() in layers_to_hide:
+                    if hasattr(track, 'name') and track.name.lower() in tracks_to_hide:
                         try:
                             track.hidden = True
-                            message(f"Set '{track.name}' layer to hidden for: {name}")
+                            message(f"Set '{track.name}' track to hidden for: {name}")
                         except Exception as e:
-                            message(f"Error hiding layer '{track.name}': {e}")
+                            message(f"Error hiding track '{track.name}': {e}")
         
         except Exception as e:
-            message(f"Error applying layer visibility for {name}: {e}")
+            message(f"Error applying track visibility for {name}: {e}")
 
     def start_duplication(self):
         """Start the duplication process."""
@@ -623,8 +623,8 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
                             else:
                                 message(f"Created: {name}")
                             
-                            # Apply layer visibility settings
-                            self.apply_layer_visibility(duplicate, name)
+                            # Apply track visibility settings
+                            self.apply_track_visibility(duplicate, name)
                             
                             success_count += 1
                             sequences_before += 1
