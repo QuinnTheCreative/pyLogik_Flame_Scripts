@@ -6,7 +6,7 @@ Author: Quinn Richardson + Claude
 Creation Date: 09.22.2025
 Last Updated: 07.20.2026
 
-Script Version: 1.2
+Script Version: 1.3
 Flame Version: 2025+ (PySide6)
 
 Description:
@@ -14,6 +14,12 @@ Description:
     Flame-style UI components. Creates multiple duplicates of selected
     sequences with names from CSV file. Automatically colors clips
     containing "_post_" in their name.
+    
+    New in v1.3:
+    - Layer visibility control based on sequence name patterns:
+      * "NoBug" pattern: hides the "bug" layer
+      * "NoSub" pattern: hides the "sub" layer
+      * "Textless" pattern: hides both "bug" and "sub" layers
 
 Usage: 
 
@@ -32,6 +38,11 @@ Usage:
     The window will remain in case you need to make duplicates of other sequences.
     
     Clips with "_post_" in their name will be automatically colored.
+    
+    Layer visibility will be automatically set based on naming conventions:
+    - Use "Textless" to hide bug and sub layers
+    - Use "NoBug" to hide the bug layer
+    - Use "NoSub" to hide the sub layer
 
 To Install:
 
@@ -55,7 +66,7 @@ from functools import partial
 
 
 TITLE = 'CSV Sequence Duplicator'
-VERSION = '1.2'
+VERSION = '1.3'
 TITLE_VERSION = f'{TITLE} v{VERSION}'
 MESSAGE_PREFIX = '[CSV DUPLICATOR]'
 
@@ -333,6 +344,17 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
                 font: 12px "Discreet";
                 padding: 5px}""")
         
+        # Layer visibility info section
+        self.layer_info_label = FlameLabel(
+            'Layer visibility: Textless | NoBug | NoSub',
+            'normal', 500)
+        self.layer_info_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.layer_info_label.setStyleSheet("""
+            QLabel {
+                color: rgb(120, 140, 160);
+                font: 11px "Discreet";
+                padding: 3px}""")
+        
         # Summary Section
         self.summary_label = FlameLabel('', 'normal', 500)
         self.summary_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -400,6 +422,9 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
         
         # Color info
         main_layout.addWidget(self.color_info_label)
+        
+        # Layer visibility info
+        main_layout.addWidget(self.layer_info_label)
         
         # Summary
         main_layout.addWidget(self.summary_label)
@@ -484,6 +509,50 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
             self.summary_label.setText("Please select a valid CSV file with names")
             self.duplicate_button.setEnabled(False)
 
+    def apply_layer_visibility(self, sequence, name):
+        """
+        Apply layer visibility settings based on sequence name patterns.
+        
+        - "Textless" pattern: hides the "bug" and "sub" layers
+        - "NoBug" pattern: hides the "bug" layer
+        - "NoSub" pattern: hides the "sub" layer
+        
+        Args:
+            sequence: PySequence object
+            name: String name of the sequence
+        """
+        try:
+            # Get all video tracks in the sequence
+            if not hasattr(sequence, 'video_tracks'):
+                return
+            
+            layers_to_hide = set()
+            
+            # Determine which layers to hide based on name patterns
+            if "textless" in name.lower():
+                layers_to_hide.update(["bug", "sub"])
+                message(f"Hiding 'bug' and 'sub' layers for Textless sequence: {name}")
+            else:
+                if "nobug" in name.lower():
+                    layers_to_hide.add("bug")
+                    message(f"Hiding 'bug' layer for NoBug sequence: {name}")
+                if "nosub" in name.lower():
+                    layers_to_hide.add("sub")
+                    message(f"Hiding 'sub' layer for NoSub sequence: {name}")
+            
+            # Apply visibility settings to each video track
+            if layers_to_hide:
+                for track in sequence.video_tracks:
+                    if hasattr(track, 'name') and track.name.lower() in layers_to_hide:
+                        try:
+                            track.hidden = True
+                            message(f"Set '{track.name}' layer to hidden for: {name}")
+                        except Exception as e:
+                            message(f"Error hiding layer '{track.name}': {e}")
+        
+        except Exception as e:
+            message(f"Error applying layer visibility for {name}: {e}")
+
     def start_duplication(self):
         """Start the duplication process."""
         if self.is_processing or not self.csv_names:
@@ -553,6 +622,9 @@ class CSVDuplicatorWindow(QtWidgets.QWidget):
                                     message(f"Created (color failed): {name}")
                             else:
                                 message(f"Created: {name}")
+                            
+                            # Apply layer visibility settings
+                            self.apply_layer_visibility(duplicate, name)
                             
                             success_count += 1
                             sequences_before += 1
